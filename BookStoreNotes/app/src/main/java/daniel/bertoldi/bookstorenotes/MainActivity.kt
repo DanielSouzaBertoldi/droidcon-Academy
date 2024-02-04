@@ -1,18 +1,14 @@
 package daniel.bertoldi.bookstorenotes
 
 import android.os.Bundle
-import android.os.PersistableBundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -33,8 +29,8 @@ sealed class Destination(val route: String) {
 
 class MainActivity : ComponentActivity() {
 
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         setContent {
             BookStoreNotesTheme {
                 Surface(
@@ -71,9 +67,5 @@ fun BookStoreScaffold(navController: NavHostController) {
                 BookDetailScreen()
             }
         }
-        Text(
-            modifier = Modifier.padding(innerPadding),
-            text = "yeah"
-        )
     }
 }

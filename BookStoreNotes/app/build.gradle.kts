@@ -23,7 +23,8 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isShrinkResources = true
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -40,6 +41,9 @@ android {
     buildFeatures {
         compose = true
     }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.8"
+    }
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
@@ -55,19 +59,21 @@ dependencies {
     implementation(libs.compose.ui)
     implementation(libs.compose.ui.graphics)
     implementation(libs.compose.ui.tooling.preview)
+    implementation(libs.material)
     implementation(libs.material.design3)
+    implementation(libs.material.icons.extended)
     implementation(libs.navigation.compose)
     implementation(libs.coil.compose)
     implementation(libs.lifecycle.viewmodel.compose)
     implementation(libs.retrofit)
     implementation(libs.retrofit.gson)
     implementation(libs.hilt)
-    implementation(libs.hilt.compiler)
-    implementation(libs.room.runtime)
-    implementation(libs.room.compiler)
     implementation(libs.room.ktx)
+    implementation(libs.room.runtime)
     implementation(platform(libs.kotlin.bom))
     implementation(platform(libs.compose.bom))
+    ksp(libs.hilt.compiler)
+    ksp(libs.room.compiler)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

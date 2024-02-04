@@ -13,6 +13,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import dagger.hilt.android.AndroidEntryPoint
 import daniel.bertoldi.bookstorenotes.ui.theme.BookStoreNotesTheme
 import daniel.bertoldi.bookstorenotes.view.BookCollectionScreen
 import daniel.bertoldi.bookstorenotes.view.BookDetailScreen
@@ -27,6 +28,7 @@ sealed class Destination(val route: String) {
     }
 }
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {

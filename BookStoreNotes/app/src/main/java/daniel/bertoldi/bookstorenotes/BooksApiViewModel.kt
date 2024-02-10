@@ -44,4 +44,6 @@ class BooksApiViewModel @Inject constructor(
         queryText.value = input
         queryInput.trySend(input)
     }
+
+    fun getBookDetails(id: String) = repo.getBookDetails(id)
 }

@@ -11,9 +11,11 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import dagger.hilt.android.AndroidEntryPoint
 import daniel.bertoldi.bookstorenotes.ui.theme.BookStoreNotesTheme
 import daniel.bertoldi.bookstorenotes.view.BookCollectionScreen
@@ -22,9 +24,9 @@ import daniel.bertoldi.bookstorenotes.view.BookStoreBottomNav
 import daniel.bertoldi.bookstorenotes.view.BookstoreScreen
 
 sealed class Destination(val route: String) {
-    object Library: Destination("library")
-    object Collection: Destination("collection")
-    object BookDetails: Destination("book/{bookId}") {
+    data object Library: Destination("library")
+    data object Collection: Destination("collection")
+    data object BookDetails: Destination("book/{bookId}") {
         fun createRoute(bookId: String?) = "book/$bookId" // TODO: check if there's a better way to do this now
     }
 }
@@ -75,8 +77,15 @@ fun BookStoreScaffold(
             composable(Destination.Collection.route) {
                 BookCollectionScreen()
             }
-            composable(Destination.BookDetails.route) {
-                BookDetailScreen()
+            composable(
+                Destination.BookDetails.route,
+                arguments = listOf(navArgument("bookId") { type = NavType.StringType})
+            ) {
+                BookDetailScreen(
+                    bookId = it.arguments?.getString("bookId"),
+                    viewModel = viewModel,
+                    innerPadding = innerPadding,
+                )
             }
         }
     }

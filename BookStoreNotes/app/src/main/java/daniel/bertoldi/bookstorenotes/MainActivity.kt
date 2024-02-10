@@ -3,6 +3,7 @@ package daniel.bertoldi.bookstorenotes
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -18,7 +19,7 @@ import daniel.bertoldi.bookstorenotes.ui.theme.BookStoreNotesTheme
 import daniel.bertoldi.bookstorenotes.view.BookCollectionScreen
 import daniel.bertoldi.bookstorenotes.view.BookDetailScreen
 import daniel.bertoldi.bookstorenotes.view.BookStoreBottomNav
-import daniel.bertoldi.bookstorenotes.view.BookStoreScreen
+import daniel.bertoldi.bookstorenotes.view.BookstoreScreen
 
 sealed class Destination(val route: String) {
     object Library: Destination("library")
@@ -31,6 +32,8 @@ sealed class Destination(val route: String) {
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
+    private val booksViewModel by viewModels<BooksApiViewModel>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -40,7 +43,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background,
                 ) {
                     val navController = rememberNavController()
-                    BookStoreScaffold(navController = navController)
+                    BookStoreScaffold(navController = navController, viewModel = booksViewModel)
                 }
             }
         }
@@ -48,7 +51,10 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun BookStoreScaffold(navController: NavHostController) {
+fun BookStoreScaffold(
+    navController: NavHostController,
+    viewModel: BooksApiViewModel,
+) {
     // val scaffoldState = rememberScaffoldState() <- TODO: doesnt exist anymore, check alternative (maybe remember { SnackbarHostState() })
     Scaffold(
         bottomBar = {
@@ -60,7 +66,11 @@ fun BookStoreScaffold(navController: NavHostController) {
             startDestination = Destination.Library.route,
         ) {
             composable(Destination.Library.route) {
-                BookStoreScreen()
+                BookstoreScreen(
+                    navController = navController,
+                    vm = viewModel,
+                    paddingValues = innerPadding,
+                )
             }
             composable(Destination.Collection.route) {
                 BookCollectionScreen()

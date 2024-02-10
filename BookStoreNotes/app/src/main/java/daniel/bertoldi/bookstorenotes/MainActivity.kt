@@ -23,6 +23,7 @@ import daniel.bertoldi.bookstorenotes.view.BookDetailScreen
 import daniel.bertoldi.bookstorenotes.view.BookStoreBottomNav
 import daniel.bertoldi.bookstorenotes.view.BookstoreScreen
 import daniel.bertoldi.bookstorenotes.viewmodel.BooksApiViewModel
+import daniel.bertoldi.bookstorenotes.viewmodel.CollectionDbViewModel
 
 sealed class Destination(val route: String) {
     data object Library: Destination("library")
@@ -36,6 +37,7 @@ sealed class Destination(val route: String) {
 class MainActivity : ComponentActivity() {
 
     private val booksViewModel by viewModels<BooksApiViewModel>()
+    private val collectionViewModel by viewModels<CollectionDbViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,7 +48,11 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background,
                 ) {
                     val navController = rememberNavController()
-                    BookStoreScaffold(navController = navController, viewModel = booksViewModel)
+                    BookStoreScaffold(
+                        navController = navController,
+                        viewModel = booksViewModel,
+                        collectionViewModel = collectionViewModel,
+                    )
                 }
             }
         }
@@ -57,6 +63,7 @@ class MainActivity : ComponentActivity() {
 fun BookStoreScaffold(
     navController: NavHostController,
     viewModel: BooksApiViewModel,
+    collectionViewModel: CollectionDbViewModel,
 ) {
     // val scaffoldState = rememberScaffoldState() <- TODO: doesnt exist anymore, check alternative (maybe remember { SnackbarHostState() })
     Scaffold(
@@ -76,7 +83,7 @@ fun BookStoreScaffold(
                 )
             }
             composable(Destination.Collection.route) {
-                BookCollectionScreen()
+                BookCollectionScreen(collectionViewModel)
             }
             composable(Destination.BookDetails.route) {
                 val id = it.arguments?.getString("bookId")

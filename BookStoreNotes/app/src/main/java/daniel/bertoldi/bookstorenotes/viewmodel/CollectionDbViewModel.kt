@@ -46,9 +46,9 @@ class CollectionDbViewModel @Inject constructor(  // TODO: why different viewmod
         }
     }
 
-    fun deleteBook(book: Volume) {
+    fun deleteBook(book: DbBook) {
         viewModelScope.launch(Dispatchers.IO) {
-            repo.deleteBookFromRepo(DbBook.fromVolume(book))
+            repo.deleteBookFromRepo(book)
         }
     }
 }

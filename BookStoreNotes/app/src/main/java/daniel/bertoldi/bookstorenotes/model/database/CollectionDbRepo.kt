@@ -8,4 +8,8 @@ interface CollectionDbRepo {
     suspend fun addBookToRepo(book: DbBook)
     suspend fun updateBookInRepo(book: DbBook)
     suspend fun deleteBookFromRepo(book: DbBook)
+    suspend fun getNotesForBook(bookId: Int): Flow<List<DbNote>>
+    suspend fun addNotesToBook(notes: DbNote)
+    suspend fun deleteNoteFromBook(note: DbNote)
+    suspend fun deleteNotesFromBook(notes: List<DbNote>)
 }

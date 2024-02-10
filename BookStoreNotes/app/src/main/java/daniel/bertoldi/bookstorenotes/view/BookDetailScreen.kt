@@ -19,6 +19,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontStyle
@@ -48,7 +51,7 @@ fun BookDetailScreen(
         }
     } else {
         LaunchedEffect(Unit) {
-            collectionDbViewModel.setCurrentBookId(book?.id)
+            collectionDbViewModel.setCurrentBookId(book.id)
         }
 
         val scrollState = rememberScrollState()
@@ -61,22 +64,22 @@ fun BookDetailScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            BookImage(url = book?.volumeInfo?.imageLinks?.thumbnail, modifier = Modifier.size(100.dp))
+            BookImage(url = book.volumeInfo.imageLinks?.thumbnail, modifier = Modifier.size(100.dp))
             Text(
                 modifier = Modifier.fillMaxWidth(),
-                text = book?.volumeInfo?.title ?: "No Title",
+                text = book.volumeInfo.title ?: "No Title",
                 textAlign = TextAlign.Center,
                 fontStyle = FontStyle.Italic,
             )
             Text(
                 modifier = Modifier.fillMaxWidth(),
-                text = book?.volumeInfo?.authors?.authorsToString() ?: "No Authors!!!!",
+                text = book.volumeInfo.authors?.authorsToString() ?: "No Authors!!!!",
                 textAlign = TextAlign.Center,
                 fontStyle = FontStyle.Italic,
             )
             Text(
                 modifier = Modifier.fillMaxWidth(),
-                text = book?.volumeInfo?.description ?: "No DESCRIPTION!!!!!",
+                text = book.volumeInfo.description ?: "No DESCRIPTION!!!!!",
                 fontWeight = FontWeight.Bold,
             )
             Button(

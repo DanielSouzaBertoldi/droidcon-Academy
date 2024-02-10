@@ -93,6 +93,7 @@ fun BookStoreScaffold(
                     viewModel.getSingleBook(id)
                     BookDetailScreen(
                         viewModel = viewModel,
+                        collectionDbViewModel = collectionViewModel,
                         innerPadding = innerPadding,
                         navController = navController,
                     )

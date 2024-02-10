@@ -11,6 +11,7 @@ import daniel.bertoldi.bookstorenotes.model.api.BookApiRepo
 import daniel.bertoldi.bookstorenotes.model.api.BookService
 import daniel.bertoldi.bookstorenotes.model.database.BookDao
 import daniel.bertoldi.bookstorenotes.model.database.CollectionDB
+import daniel.bertoldi.bookstorenotes.model.database.CollectionDbRepo
 import daniel.bertoldi.bookstorenotes.model.database.CollectionDbRepoImpl
 import daniel.bertoldi.bookstorenotes.model.database.Constants.DB
 
@@ -29,5 +30,5 @@ class HiltModule {
     fun provideBookDao(collectionDB: CollectionDB) = collectionDB.bookDao()
 
     @Provides
-    fun provideDbRepo(bookDao: BookDao) = CollectionDbRepoImpl(bookDao) // TODO: ??? maybe there's a better way. All these provides kinda seeem wrong.
+    fun provideDbRepo(bookDao: BookDao): CollectionDbRepo = CollectionDbRepoImpl(bookDao) // TODO: ??? maybe there's a better way. All these provides kinda seeem wrong.
 }

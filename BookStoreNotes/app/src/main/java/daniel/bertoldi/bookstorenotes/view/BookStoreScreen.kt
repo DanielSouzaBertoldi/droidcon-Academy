@@ -35,7 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
-import daniel.bertoldi.bookstorenotes.BooksApiViewModel
+import daniel.bertoldi.bookstorenotes.viewmodel.BooksApiViewModel
 import daniel.bertoldi.bookstorenotes.Destination
 import daniel.bertoldi.bookstorenotes.authorsToString
 import daniel.bertoldi.bookstorenotes.model.GoogleBooksApiResponse

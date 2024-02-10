@@ -13,17 +13,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
 import dagger.hilt.android.AndroidEntryPoint
 import daniel.bertoldi.bookstorenotes.ui.theme.BookStoreNotesTheme
 import daniel.bertoldi.bookstorenotes.view.BookCollectionScreen
 import daniel.bertoldi.bookstorenotes.view.BookDetailScreen
 import daniel.bertoldi.bookstorenotes.view.BookStoreBottomNav
 import daniel.bertoldi.bookstorenotes.view.BookstoreScreen
+import daniel.bertoldi.bookstorenotes.viewmodel.BooksApiViewModel
 
 sealed class Destination(val route: String) {
     data object Library: Destination("library")

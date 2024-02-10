@@ -1,6 +1,8 @@
 package daniel.bertoldi.bookstorenotes.model.api // TODO: repo inside the api package? weird
 
+import androidx.compose.runtime.mutableStateOf
 import daniel.bertoldi.bookstorenotes.model.GoogleBooksApiResponse
+import daniel.bertoldi.bookstorenotes.model.Volume
 import kotlinx.coroutines.flow.MutableStateFlow
 import retrofit2.Call
 import retrofit2.Callback
@@ -8,8 +10,7 @@ import retrofit2.Response
 
 class BookApiRepo(private val api: BookApi) { // TODO: Not injecting book api???
     val books = MutableStateFlow<NetworkResult<GoogleBooksApiResponse>>(NetworkResult.Initial())
-    // really dumb solution not using Room, keeping everything in memory (not performatic at all!)
-    val booksList = mutableListOf<BookDetails>()
+    val bookDetails = mutableStateOf<Volume?>(null)
 
     fun query(query: String) {
         books.value = NetworkResult.Loading()
@@ -21,21 +22,7 @@ class BookApiRepo(private val api: BookApi) { // TODO: Not injecting book api???
                 ) {
                     if (response.isSuccessful) {
                         response.body()?.let {
-                            books.value = NetworkResult.Success(it)
-                            // dumb dumb dumb
-                            it.items.forEach { volume ->
-                                if (volume.id != null && volume.volumeInfo.title != null) {
-                                    booksList.add(
-                                        BookDetails(
-                                            id = volume.id,
-                                            title = volume.volumeInfo.title,
-                                            authors = volume.volumeInfo.authors,
-                                            description = volume.volumeInfo.description,
-                                            imageUrl = volume.volumeInfo.imageLinks?.thumbnail,
-                                        )
-                                    )
-                                }
-                            }
+                            books.value = NetworkResult.Success(it) // TODO: WHY NOT MAP THE RESPONSE TO A NEW MODEL?!!!
                         }
                     } else {
                         books.value = NetworkResult.Error(message = response.message())
@@ -52,7 +39,9 @@ class BookApiRepo(private val api: BookApi) { // TODO: Not injecting book api???
         )
     }
 
-    fun getBookDetails(id: String) = booksList.firstOrNull { it.id == id }
+    fun getSingleBook(id: String) {
+        bookDetails.value = books.value.data?.items?.firstOrNull { it.id == id }
+    }
 }
 
 data class BookDetails(

@@ -24,59 +24,59 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import daniel.bertoldi.bookstorenotes.BooksApiViewModel
+import daniel.bertoldi.bookstorenotes.Destination
 import daniel.bertoldi.bookstorenotes.authorsToString
 
 @Composable
 fun BookDetailScreen(
-    bookId: String?,
     viewModel: BooksApiViewModel,
     innerPadding: PaddingValues,
+    navController: NavController,
 ) {
-    val book = viewModel.getBookDetails(bookId.orEmpty()) // dumb dumb dumb
-    val scrollState = rememberScrollState()
-    if (book != null) {
-        Column(
-            modifier = Modifier
-                .padding(innerPadding)
-                .fillMaxSize()
-                .verticalScroll(scrollState)
-                .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-        ) {
-            BookImage(url = book.imageUrl, modifier = Modifier.size(100.dp))
-            Text(
-                modifier = Modifier.fillMaxWidth(),
-                text = book.title,
-                textAlign = TextAlign.Center,
-                fontStyle = FontStyle.Italic,
-            )
-            Text(
-                modifier = Modifier.fillMaxWidth(),
-                text = book.authors?.authorsToString() ?: "No Authors!!!!",
-                textAlign = TextAlign.Center,
-                fontStyle = FontStyle.Italic,
-            )
-            Text(
-                modifier = Modifier.fillMaxWidth(),
-                text = book.description ?: "No DESCRIPTION!!!!!",
-                fontWeight = FontWeight.Bold,
-            )
-            Button(onClick = { /*TODO*/ }) {
-                Row {
-                    Icon(imageVector = Icons.Filled.Add, contentDescription = null)
-                    Text(text = "Add To Collection")
-                }
-            }
+    val book = viewModel.bookDetails.value
+
+    if (book == null) { // TODO: nice, no error state at all!
+        navController.navigate(Destination.Library.route) {
+            popUpTo(Destination.Library.route)
+            launchSingleTop = true
         }
-    } else {
+    }
+
+
+    val scrollState = rememberScrollState()
+    Column(
+        modifier = Modifier
+            .padding(innerPadding)
+            .fillMaxSize()
+            .verticalScroll(scrollState)
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        BookImage(url = book?.volumeInfo?.imageLinks?.thumbnail, modifier = Modifier.size(100.dp))
         Text(
-            modifier = Modifier
-                .padding(innerPadding)
-                .fillMaxSize(),
-            text = "Oops! Something went terribly wrong!",
+            modifier = Modifier.fillMaxWidth(),
+            text = book?.volumeInfo?.title ?: "No Title",
+            textAlign = TextAlign.Center,
+            fontStyle = FontStyle.Italic,
         )
+        Text(
+            modifier = Modifier.fillMaxWidth(),
+            text = book?.volumeInfo?.authors?.authorsToString() ?: "No Authors!!!!",
+            textAlign = TextAlign.Center,
+            fontStyle = FontStyle.Italic,
+        )
+        Text(
+            modifier = Modifier.fillMaxWidth(),
+            text = book?.volumeInfo?.description ?: "No DESCRIPTION!!!!!",
+            fontWeight = FontWeight.Bold,
+        )
+        Button(onClick = { /*TODO*/ }) {
+            Icon(imageVector = Icons.Filled.Add, contentDescription = null)
+            Text(text = "Add To Collection")
+        }
     }
 }

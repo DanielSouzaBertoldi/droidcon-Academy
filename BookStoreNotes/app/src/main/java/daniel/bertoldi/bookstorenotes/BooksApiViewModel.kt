@@ -23,6 +23,7 @@ class BooksApiViewModel @Inject constructor(
     val result = repo.books
     val queryText = MutableStateFlow("")
     private val queryInput = Channel<String>(Channel.CONFLATED)
+    val bookDetails = repo.bookDetails
 
     init {
         performQuery()
@@ -45,5 +46,5 @@ class BooksApiViewModel @Inject constructor(
         queryInput.trySend(input)
     }
 
-    fun getBookDetails(id: String) = repo.getBookDetails(id)
+    fun getSingleBook(id: String) = repo.getSingleBook(id)
 }

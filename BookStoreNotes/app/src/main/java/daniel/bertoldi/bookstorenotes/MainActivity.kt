@@ -1,6 +1,7 @@
 package daniel.bertoldi.bookstorenotes
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -10,6 +11,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -77,15 +79,18 @@ fun BookStoreScaffold(
             composable(Destination.Collection.route) {
                 BookCollectionScreen()
             }
-            composable(
-                Destination.BookDetails.route,
-                arguments = listOf(navArgument("bookId") { type = NavType.StringType})
-            ) {
-                BookDetailScreen(
-                    bookId = it.arguments?.getString("bookId"),
-                    viewModel = viewModel,
-                    innerPadding = innerPadding,
-                )
+            composable(Destination.BookDetails.route) {
+                val id = it.arguments?.getString("bookId")
+                if (id == null) {
+                    Toast.makeText(LocalContext.current, "Book id is required", Toast.LENGTH_SHORT).show()
+                } else {
+                    viewModel.getSingleBook(id)
+                    BookDetailScreen(
+                        viewModel = viewModel,
+                        innerPadding = innerPadding,
+                        navController = navController,
+                    )
+                }
             }
         }
     }

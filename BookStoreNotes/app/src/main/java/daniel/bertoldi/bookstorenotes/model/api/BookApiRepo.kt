@@ -20,7 +20,7 @@ class BookApiRepo(private val api: BookApi) { // TODO: Not injecting book api???
                     call: Call<GoogleBooksApiResponse>,
                     response: Response<GoogleBooksApiResponse>
                 ) {
-                    if (response.isSuccessful) {
+                    if (response.isSuccessful) { // TODO: No pagination at all
                         response.body()?.let {
                             books.value = NetworkResult.Success(it) // TODO: WHY NOT MAP THE RESPONSE TO A NEW MODEL?!!!
                         }

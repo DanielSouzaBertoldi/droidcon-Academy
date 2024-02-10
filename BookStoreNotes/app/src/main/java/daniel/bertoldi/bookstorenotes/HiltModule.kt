@@ -7,6 +7,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
+import daniel.bertoldi.bookstorenotes.connectivity.ConnectivityMonitor
 import daniel.bertoldi.bookstorenotes.model.api.BookApiRepo
 import daniel.bertoldi.bookstorenotes.model.api.BookService
 import daniel.bertoldi.bookstorenotes.model.database.BookDao
@@ -39,4 +40,8 @@ class HiltModule {
         bookDao: BookDao,
         notesDao: NotesDao,
     ): CollectionDbRepo = CollectionDbRepoImpl(bookDao, notesDao)
+
+    @Provides
+    fun provideConnectivityMonitor(@ApplicationContext context: Context) =
+        ConnectivityMonitor.getInstance(context)
 }

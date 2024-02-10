@@ -38,6 +38,8 @@ import coil.compose.AsyncImage
 import daniel.bertoldi.bookstorenotes.viewmodel.BooksApiViewModel
 import daniel.bertoldi.bookstorenotes.Destination
 import daniel.bertoldi.bookstorenotes.authorsToString
+import daniel.bertoldi.bookstorenotes.connectivity.ConnectivityMonitor
+import daniel.bertoldi.bookstorenotes.connectivity.ConnectivityObservable
 import daniel.bertoldi.bookstorenotes.model.GoogleBooksApiResponse
 import daniel.bertoldi.bookstorenotes.model.api.NetworkResult
 
@@ -50,6 +52,7 @@ fun BookstoreScreen(
 
     val result by vm.result.collectAsState()
     val text = vm.queryText.collectAsState()
+    val networkAvailable = vm.networkAvailable.observe().collectAsState(initial = ConnectivityObservable.Status.AVAILABLE)
 
     Column(
         modifier = Modifier
@@ -57,6 +60,22 @@ fun BookstoreScreen(
             .padding(bottom = paddingValues.calculateBottomPadding()),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
+        if (networkAvailable.value == ConnectivityObservable.Status.UNAVAILABLE) {
+            Row(
+                modifier = Modifier
+                .fillMaxWidth()
+                .background(Color.Red),
+                horizontalArrangement = Arrangement.Center,
+            ) {
+                Text(
+                    modifier = Modifier.padding(16.dp),
+                    text = "Network Unavailable",
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White,
+                )
+            }
+        }
 
         OutlinedTextField(
             value = text.value,
@@ -115,7 +134,9 @@ fun ShowBooksList(result: NetworkResult<GoogleBooksApiResponse>, navController: 
                             if (volume.id != null)
                                 navController.navigate(Destination.BookDetails.createRoute(volume.id))
                             else
-                                Toast.makeText(context, "Book id is null", Toast.LENGTH_SHORT).show()
+                                Toast
+                                    .makeText(context, "Book id is null", Toast.LENGTH_SHORT)
+                                    .show()
                         }
                 ) {
                     Row(modifier = Modifier.fillMaxWidth()) {

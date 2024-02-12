@@ -23,7 +23,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import daniel.bertoldi.watertracker.ui.theme.WaterTrackerTheme
 
-class WaterTrackerActivity : ComponentActivity() {
+class WaterTrackerActivity : ComponentActivity(), WaterIntakeSharedPrefsListener {
+    var waterCount = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -33,16 +35,26 @@ class WaterTrackerActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    WaterTracker()
+                    WaterTracker(waterCount, ::incrementWaterIntake)
                 }
             }
         }
     }
+
+    override fun onWaterIntakeChanged(intake: Int) {
+        waterCount = intake
+    }
+
+    private fun incrementWaterIntake() {
+        // TODO!
+    }
 }
 
 @Composable
-fun WaterTracker() {
-    var waterCount by remember { mutableIntStateOf(0) }
+fun WaterTracker(
+    waterCount: Int,
+    incrementWaterIntake: () -> Unit,
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceEvenly,
@@ -54,7 +66,7 @@ fun WaterTracker() {
             fontWeight = FontWeight.Bold,
         )
         Button(
-            onClick = { waterCount += 1 },
+            onClick = { incrementWaterIntake() },
         ) {
             Text(text = "Track!")
         }

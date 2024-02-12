@@ -62,12 +62,13 @@ fun WaterTracker(
             factory = { WaterCountTextView(context, null, 0) },
             update = {
                 // I know, a bit of a tiny hack here.
-                // The idea is that the CustomView is capable of already setting it's initial count,
-                // which is the case when we init the view in the `factory` lambda. However, the
-                // value in `waterCount` is initialized as 0, and its value is passed down to this
-                // `update` lambda which we need to force the CustomView to update once the user
-                // clicks in the Composable button below. This `if` just makes sure that the counter
-                // is always incrementing, which is enough for this tiny project.
+                // The idea is that the CustomView is capable of already setting it's initial count
+                // without the need for the ViewModel to do the same. This is what is happening when
+                // when we init the view in the `factory` lambda. However, the value in `waterCount`
+                // is initialized as 0, and its value is passed down to this `update` lambda which
+                // we need to force the CustomView to update once the user clicks in the Composable
+                // button below. This `if` just makes sure that the counter is always incrementing,
+                // which is enough for this tiny project.
                 if (it.text.toString().toInt() < waterCount.value) {
                     it.text = waterCount.value.toString()
                 }

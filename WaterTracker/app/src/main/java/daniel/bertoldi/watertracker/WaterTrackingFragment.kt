@@ -21,6 +21,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import daniel.bertoldi.watertracker.databinding.FragmentLayoutBinding
 import daniel.bertoldi.watertracker.ui.theme.WaterTrackerTheme
@@ -28,9 +29,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class WaterTrackingFragment : Fragment(), WaterIntakeSharedPrefsListener {
-    private var waterCount = MutableStateFlow(0)
-    @Inject lateinit var preferencesHelper: PreferencesHelper
+class WaterTrackingFragment : Fragment() {
+
+    private val viewModel by viewModels<WaterTrackingViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,28 +43,13 @@ class WaterTrackingFragment : Fragment(), WaterIntakeSharedPrefsListener {
                 modifier = Modifier.fillMaxSize(),
                 color = MaterialTheme.colorScheme.background
             ) {
-                WaterTracker(waterCount.collectAsState(), ::incrementWaterIntake)
+                WaterTracker(viewModel.flow.collectAsState(), viewModel::incrementWaterIntake)
             }
         }
     }.root
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        waterCount.value = preferencesHelper.getWaterIntake()
-        preferencesHelper.subscribeToWaterIntakeChanges(this)
-    }
-
-    override fun onDestroyView() {
-        preferencesHelper.unSubscribeToWaterIntakeChanges()
-        super.onDestroyView()
-    }
-
-    override fun onWaterIntakeChanged(intake: Int) {
-        waterCount.value = intake
-    }
-
-    private fun incrementWaterIntake() {
-        preferencesHelper.incrementWaterIntake()
     }
 }
 

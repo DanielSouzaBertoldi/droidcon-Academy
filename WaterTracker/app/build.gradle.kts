@@ -69,6 +69,7 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
+    implementation("androidx.fragment:fragment-ktx:1.6.2") // so that we can use viewModels()
     ksp("com.google.dagger:hilt-compiler:2.50")
 
     testImplementation("junit:junit:4.13.2")

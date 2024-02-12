@@ -2,8 +2,10 @@ package daniel.bertoldi.watertracker
 
 import android.content.Context
 import android.content.SharedPreferences
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
 
-class PreferencesHelper constructor(context: Context) {
+class PreferencesHelper @Inject constructor(@ApplicationContext context: Context) {
     private val preferences =
         context.getSharedPreferences("water_tracker_prefs", Context.MODE_PRIVATE)
     private val KEY_WATER_INTAKE = "KEY_WATER_INTAKE"

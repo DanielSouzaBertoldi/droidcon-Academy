@@ -16,7 +16,6 @@ class WaterTrackingViewModel @Inject constructor(
 
     init {
         preferencesHelper.subscribeToWaterIntakeChanges(this)
-        _flow.value = retrieveWaterIntake()
     }
 
     override fun onCleared() {
@@ -27,8 +26,6 @@ class WaterTrackingViewModel @Inject constructor(
     fun incrementWaterIntake() {
         preferencesHelper.incrementWaterIntake()
     }
-
-    private fun retrieveWaterIntake() = preferencesHelper.getWaterIntake()
 
     override fun onWaterIntakeChanged(intake: Int) {
         _flow.value = intake

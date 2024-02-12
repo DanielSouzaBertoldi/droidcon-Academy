@@ -14,6 +14,8 @@ class PreferencesHelper constructor(context: Context) {
         preferences.edit().putInt(KEY_WATER_INTAKE, waterIntake + 1).apply()
     }
 
+    fun getWaterIntake() = preferences.getInt(KEY_WATER_INTAKE, 0)
+
     fun subscribeToWaterIntakeChanges(listener: WaterIntakeSharedPrefsListener) {
         this.waterIntakePrefsListener = listener
         preferences.registerOnSharedPreferenceChangeListener(sharedPreferencesChangeListener)

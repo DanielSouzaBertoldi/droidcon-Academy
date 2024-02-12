@@ -25,10 +25,12 @@ import dagger.hilt.android.AndroidEntryPoint
 import daniel.bertoldi.watertracker.databinding.FragmentLayoutBinding
 import daniel.bertoldi.watertracker.ui.theme.WaterTrackerTheme
 import kotlinx.coroutines.flow.MutableStateFlow
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class WaterTrackingFragment : Fragment() {
 
+    @Inject lateinit var logger: Logger
     private val viewModel by viewModels<WaterTrackingViewModel>()
 
     override fun onCreateView(

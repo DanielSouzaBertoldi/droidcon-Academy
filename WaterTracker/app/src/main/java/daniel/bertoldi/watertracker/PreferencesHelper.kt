@@ -5,7 +5,7 @@ import android.content.SharedPreferences
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
-class PreferencesHelper @Inject constructor(@ApplicationContext context: Context) {
+open class PreferencesHelper @Inject constructor(@ApplicationContext context: Context) {
     private val preferences =
         context.getSharedPreferences("water_tracker_prefs", Context.MODE_PRIVATE)
     private val KEY_WATER_INTAKE = "KEY_WATER_INTAKE"
@@ -16,7 +16,7 @@ class PreferencesHelper @Inject constructor(@ApplicationContext context: Context
         preferences.edit().putInt(KEY_WATER_INTAKE, waterIntake + 1).apply()
     }
 
-    fun getWaterIntake() = preferences.getInt(KEY_WATER_INTAKE, 0)
+    open fun getWaterIntake() = preferences.getInt(KEY_WATER_INTAKE, 0)
 
     fun subscribeToWaterIntakeChanges(listener: WaterIntakeSharedPrefsListener) {
         this.waterIntakePrefsListener = listener

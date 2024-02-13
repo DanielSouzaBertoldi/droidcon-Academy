@@ -16,7 +16,7 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "daniel.bertoldi.watertracker.TestRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -69,7 +69,8 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
-    implementation("androidx.fragment:fragment-ktx:1.6.2") // so that we can use viewModels()
+    implementation("androidx.fragment:fragment-ktx:1.6.2")  // so that we can use viewModels()
+    implementation("androidx.test.ext:junit-ktx:1.1.5")
     ksp("com.google.dagger:hilt-compiler:2.50")
 
     testImplementation("junit:junit:4.13.2")
@@ -80,11 +81,14 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
-    // TODO: do I need these?
+    androidTestImplementation("androidx.test:runner:1.5.2")
+    androidTestUtil("androidx.test:orchestrator:1.4.2")
+
+    androidTestImplementation("org.mockito:mockito-android:5.10.0")
+    androidTestImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
     // For instrumentation tests
     androidTestImplementation("com.google.dagger:hilt-android-testing:2.50")
     kspAndroidTest("com.google.dagger:hilt-compiler:2.50")
-
     // For local unit tests
     testImplementation("com.google.dagger:hilt-android-testing:2.50")
     kspTest("com.google.dagger:hilt-compiler:2.50")

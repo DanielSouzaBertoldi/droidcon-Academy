@@ -5,6 +5,8 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.staticCompositionLocalOf
 
 private val LightColors = lightColors(
   primary = md_theme_light_primary,
@@ -28,12 +30,26 @@ private val DarkColors = darkColors(
   onSurface = md_theme_dark_onSurface,
 )
 
+enum class Theme {
+  LIGHT,
+  DARK,
+  FOLLOW_SYSTEM;
+}
+
+val LocalTheme = staticCompositionLocalOf<MutableState<Theme>> {
+  error("Theme not provided")
+}
+
 @Composable
 fun BorrowTheme(
-  darkTheme: Boolean = isSystemInDarkTheme(),
+  theme: Theme = Theme.FOLLOW_SYSTEM,
   content: @Composable () -> Unit,
 ) {
-  val colors = if (darkTheme) DarkColors else LightColors
+  val colors = when (theme) {
+    Theme.LIGHT -> LightColors
+    Theme.DARK -> DarkColors
+    Theme.FOLLOW_SYSTEM -> if (isSystemInDarkTheme()) DarkColors else LightColors
+  }
 
   MaterialTheme(
     colors = colors,

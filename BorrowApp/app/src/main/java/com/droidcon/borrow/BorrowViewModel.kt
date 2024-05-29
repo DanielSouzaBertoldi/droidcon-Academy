@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.droidcon.borrow.data.BorrowRepository
 import com.droidcon.borrow.data.models.BorrowItem
+import com.droidcon.borrow.ui.theme.Theme
 import kotlinx.coroutines.launch
 
 class BorrowViewModel(private val borrowRepository: BorrowRepository): ViewModel() {
@@ -16,6 +17,8 @@ class BorrowViewModel(private val borrowRepository: BorrowRepository): ViewModel
   var itemName = ""
   var borrowerName = ""
   var date = ""
+
+  var theme: Theme = Theme.FOLLOW_SYSTEM
 
   fun addItem() {
     viewModelScope.launch {

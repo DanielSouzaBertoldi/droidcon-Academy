@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
@@ -43,8 +44,8 @@ fun DatePicker(
       .fillMaxWidth()
       .wrapContentSize(Alignment.TopStart)
       .padding(16.dp)
-      .background(color = Color(0xFFFFFBFE), shape = RoundedCornerShape(10.dp))
-      .border(width = 2.dp, color = Color(0xFF1C1B1F), shape = RoundedCornerShape(10.dp))
+      .background(color = MaterialTheme.colors.surface, shape = RoundedCornerShape(10.dp))
+      .border(width = 2.dp, color = MaterialTheme.colors.onSurface, shape = RoundedCornerShape(10.dp))
       .clickable(
         indication = rememberRipple(bounded = true),
         interactionSource = remember {
@@ -73,7 +74,7 @@ fun DatePicker(
 
       Text(
         text = showLabel,
-        color = Color(0xFF1C1B1F),
+        color = MaterialTheme.colors.onSurface,
         modifier = Modifier
           .fillMaxWidth()
           .constrainAs(label) {
@@ -95,7 +96,7 @@ fun DatePicker(
             top.linkTo(parent.top)
             bottom.linkTo(parent.bottom)
           },
-        tint = Color(0xFF1C1B1F)
+        tint = MaterialTheme.colors.onSurface
       )
     }
   }

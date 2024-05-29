@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
@@ -35,7 +36,7 @@ fun EmptyStateScreen() {
       contentDescription = null,
       modifier = Modifier
         .size(60.dp, 60.dp),
-      tint = Color(0xFF1C1B1F)
+      tint = MaterialTheme.colors.onBackground,
     )
 
     Spacer(
@@ -47,7 +48,7 @@ fun EmptyStateScreen() {
       text = "No items borrowed",
       modifier = Modifier
         .fillMaxWidth(),
-      color = Color.Black,
+      color = MaterialTheme.colors.onBackground,
       textAlign = TextAlign.Center,
       fontSize = 24.sp,
       fontWeight = FontWeight.Bold

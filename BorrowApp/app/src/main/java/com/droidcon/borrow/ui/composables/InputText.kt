@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -49,8 +50,8 @@ fun InputText(label: String, requestFocus: Boolean = false, onTextChange: (Strin
       modifier = Modifier
         .fillMaxWidth()
         .padding(horizontal = 16.dp)
-        .background(color = Color(0xFFFFFBFE), shape = RoundedCornerShape(10.dp))
-        .border(width = 2.dp, color = Color(0xFF1C1B1F), shape = RoundedCornerShape(10.dp))
+        .background(color = MaterialTheme.colors.surface, shape = RoundedCornerShape(10.dp))
+        .border(width = 2.dp, color = MaterialTheme.colors.onSurface, shape = RoundedCornerShape(10.dp))
     ) {
       BasicTextField(
         modifier = Modifier
@@ -66,9 +67,9 @@ fun InputText(label: String, requestFocus: Boolean = false, onTextChange: (Strin
             }
           },
         textStyle = TextStyle(
-          color = Color(0xFF1C1B1F)
+          color = MaterialTheme.colors.onSurface
         ),
-        cursorBrush = SolidColor(Color(0xFF1C1B1F)),
+        cursorBrush = SolidColor(MaterialTheme.colors.onSurface),
         keyboardActions = KeyboardActions(
           onNext = {
             focusRequester.requestFocus()

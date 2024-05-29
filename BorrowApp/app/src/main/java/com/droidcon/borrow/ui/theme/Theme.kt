@@ -1,5 +1,6 @@
 package com.droidcon.borrow.ui.theme
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
@@ -28,8 +29,11 @@ private val DarkColors = darkColors(
 )
 
 @Composable
-fun BorrowTheme(content: @Composable () -> Unit) {
-  val colors = DarkColors
+fun BorrowTheme(
+  darkTheme: Boolean = isSystemInDarkTheme(),
+  content: @Composable () -> Unit,
+) {
+  val colors = if (darkTheme) DarkColors else LightColors
 
   MaterialTheme(
     colors = colors,

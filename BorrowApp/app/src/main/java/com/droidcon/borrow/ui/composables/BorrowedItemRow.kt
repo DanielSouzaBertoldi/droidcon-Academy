@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -23,7 +24,7 @@ fun BorrowedItemRow(item: BorrowItem) {
       .fillMaxWidth()
       .padding(horizontal = 16.dp),
     shape = RoundedCornerShape(4.dp),
-    backgroundColor = Color(0xFFFFFBFE),
+    backgroundColor = MaterialTheme.colors.surface,
     elevation = 4.dp
   ) {
     Column(

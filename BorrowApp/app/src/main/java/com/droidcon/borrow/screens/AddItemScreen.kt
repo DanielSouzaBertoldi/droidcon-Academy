@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -48,7 +49,7 @@ fun AddItemForm(borrowViewModel: BorrowViewModel, navController: NavController, 
   Column(
     modifier = Modifier
       .fillMaxSize()
-      .background(color = Color(0xFFFFFBFE))
+      .background(color = MaterialTheme.colors.background)
       .padding(paddingValues)
   ) {
     InputText(

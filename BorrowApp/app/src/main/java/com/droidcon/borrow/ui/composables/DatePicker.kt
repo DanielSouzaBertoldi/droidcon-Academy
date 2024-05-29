@@ -23,7 +23,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -45,7 +44,11 @@ fun DatePicker(
       .wrapContentSize(Alignment.TopStart)
       .padding(16.dp)
       .background(color = MaterialTheme.colors.surface, shape = RoundedCornerShape(10.dp))
-      .border(width = 2.dp, color = MaterialTheme.colors.onSurface, shape = RoundedCornerShape(10.dp))
+      .border(
+        width = 2.dp,
+        color = MaterialTheme.colors.onSurface,
+        shape = RoundedCornerShape(10.dp)
+      )
       .clickable(
         indication = rememberRipple(bounded = true),
         interactionSource = remember {

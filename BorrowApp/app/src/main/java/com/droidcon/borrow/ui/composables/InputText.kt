@@ -1,5 +1,6 @@
 package com.droidcon.borrow.ui.composables
 
+import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -26,7 +27,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.droidcon.borrow.ui.theme.BorrowTheme
 import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -51,7 +54,11 @@ fun InputText(label: String, requestFocus: Boolean = false, onTextChange: (Strin
         .fillMaxWidth()
         .padding(horizontal = 16.dp)
         .background(color = MaterialTheme.colors.surface, shape = RoundedCornerShape(10.dp))
-        .border(width = 2.dp, color = MaterialTheme.colors.onSurface, shape = RoundedCornerShape(10.dp))
+        .border(
+          width = 2.dp,
+          color = MaterialTheme.colors.onSurface,
+          shape = RoundedCornerShape(10.dp)
+        )
     ) {
       BasicTextField(
         modifier = Modifier
@@ -91,5 +98,21 @@ fun InputText(label: String, requestFocus: Boolean = false, onTextChange: (Strin
         }
       }
     }
+  }
+}
+
+@Preview
+@Composable
+private fun InputTextLightPreview() {
+  BorrowTheme {
+    InputText(label = "label", onTextChange = {})
+  }
+}
+
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun InputTextDarkPreview() {
+  BorrowTheme {
+    InputText(label = "label", onTextChange = {})
   }
 }

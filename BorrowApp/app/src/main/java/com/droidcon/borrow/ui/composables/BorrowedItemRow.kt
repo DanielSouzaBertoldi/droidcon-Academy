@@ -1,5 +1,6 @@
 package com.droidcon.borrow.ui.composables
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,9 +13,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.droidcon.borrow.data.models.BorrowItem
+import com.droidcon.borrow.ui.theme.BorrowTheme
 
 @Composable
 fun BorrowedItemRow(item: BorrowItem) {
@@ -42,5 +45,38 @@ fun BorrowedItemRow(item: BorrowItem) {
       Spacer(modifier = Modifier.padding(top = 10.dp))
       Text(text = item.borrowDate)
     }
+  }
+}
+
+@Preview(group = "BorrowedItemPreview")
+@Composable
+private fun BorrowedItemRowPreview() {
+  BorrowTheme {
+    BorrowedItemRow(
+      item = BorrowItem(
+        id = 0,
+        itemName = "PlayStation",
+        borrowerName = "Steve",
+        borrowDate = "29/05/2024",
+      )
+    )
+  }
+}
+
+@Preview(
+  uiMode = Configuration.UI_MODE_NIGHT_YES,
+  group = "BorrowedItemPreview"
+)
+@Composable
+private fun BorrowedItemRowDarkPreview() {
+  BorrowTheme {
+    BorrowedItemRow(
+      item = BorrowItem(
+        id = 0,
+        itemName = "PlayStation",
+        borrowerName = "Steve",
+        borrowDate = "29/05/2024",
+      )
+    )
   }
 }

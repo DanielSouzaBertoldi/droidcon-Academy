@@ -1,13 +1,17 @@
 package com.droidcon.alldone.ui.component
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -15,7 +19,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
@@ -54,6 +60,40 @@ fun ToDoList(
             content = {
                 categoryFilter.forEach { toDoCategory ->
                     if (toDoItems.containsKey(toDoCategory) && toDoItems[toDoCategory]?.isEmpty() == false) {
+                        item { 
+                            Row {
+                                Spacer(modifier = Modifier.width(5.dp))
+                                Icon(
+                                    modifier = Modifier
+                                        .padding(start =  12.dp, end = 5.dp)
+                                        .size(22.dp)
+                                        .align(Alignment.CenterVertically),
+                                    painter = painterResource(
+                                        id = when (toDoCategory) {
+                                            ToDoCategory.PERSONAL -> R.drawable.ic_category_personal
+                                            ToDoCategory.PROFESSIONAL -> R.drawable.ic_category_professional
+                                            ToDoCategory.SOCIAL -> R.drawable.ic_category_social
+                                            ToDoCategory.TRAVEL -> R.drawable.ic_category_travel
+                                        }
+                                    ),
+                                    contentDescription = null,
+                                )
+                                Text(
+                                    modifier = Modifier.semantics { heading() },
+                                    text = stringResource(
+                                        id = when (toDoCategory) {
+                                            ToDoCategory.PERSONAL -> R.string.category_personal
+                                            ToDoCategory.PROFESSIONAL -> R.string.category_professional
+                                            ToDoCategory.SOCIAL -> R.string.category_social
+                                            ToDoCategory.TRAVEL -> R.string.category_travel
+                                        }
+                                    ),
+                                    fontSize = 24.sp,
+                                    fontWeight = FontWeight.Bold,
+                                )
+                            }
+                        }
+                        
                         items(toDoItems[toDoCategory]!!) { toDoItem ->
                             ToDoListItem(toDoItem) { updatedItem, editMode ->
                                 updateItem(updatedItem, editMode)

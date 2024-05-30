@@ -30,7 +30,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.CustomAccessibilityAction
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.customActions
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -85,6 +89,22 @@ fun ToDoListItem(
                     )
                 }
             )
+            .semantics {
+                customActions = listOf(
+                    CustomAccessibilityAction(editDescription) {
+                        editAction()
+                        true
+                    },
+                    CustomAccessibilityAction(editDescription) {
+                        shareAction()
+                        true
+                    },
+                    CustomAccessibilityAction(editDescription) {
+                        addToCalendarAction()
+                        true
+                    },
+                )
+            }
 
     ) {
         Spacer(modifier = modifier.height(6.dp))
@@ -116,9 +136,10 @@ fun ToDoListItem(
                 modifier = Modifier
                     .testTag("OutlinedCard_ToDoListItem_Checkbox")
                     .padding(horizontal = 12.dp)
+                    .clearAndSetSemantics {  }
             )
         }
-        Row {
+        Row(modifier = Modifier.clearAndSetSemantics {  }) {
             IconButton(
                 modifier = Modifier
                     .blueprintId("ShareButton"),

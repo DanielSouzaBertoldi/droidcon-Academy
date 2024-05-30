@@ -48,8 +48,7 @@ fun AnimateContentSizeSheet() {
                 .background(MaterialTheme.colorScheme.secondaryContainer)
                 .padding(16.dp)
                 .align(Alignment.Start)
-            //TODO: Add animateContentSize here
-
+                .animateContentSize(animationSpec = spring(dampingRatio = Spring.DampingRatioHighBouncy))
         )
         TextButton(
             onClick = { expanded = !expanded },

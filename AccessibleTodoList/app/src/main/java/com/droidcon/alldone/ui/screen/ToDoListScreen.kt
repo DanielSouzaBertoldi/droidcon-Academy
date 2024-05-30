@@ -41,7 +41,7 @@ fun ToDoListScreen(
         }
 
         is ToDoListViewModel.ToDoListUiState.ToDoList -> {
-            ToDoList(uiState.list, listState, modifier) { newItem, editMode ->
+            ToDoList(uiState.toDoItems, listState, modifier) { newItem, editMode ->
                 editItem(newItem, editMode)
             }
             uiState.recentlyDeleted?.apply {
@@ -63,7 +63,7 @@ private fun ToDoListScreenPreview() {
         Surface {
             ToDoListScreen(
                 uiState = ToDoListViewModel.ToDoListUiState.ToDoList(
-                    list = OrganiseToDoList(listOf(
+                    toDoItems = OrganiseToDoList(listOf(
                         ToDoItem(-1, "Personal 1", "Personal 1 description",ToDoCategory.PERSONAL),
                         ToDoItem(-1, "Personal 2", "Personal 2 description",ToDoCategory.PERSONAL),
                         ToDoItem(-1, "Travel 1", "Travel 1 description",ToDoCategory.TRAVEL),

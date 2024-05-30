@@ -32,7 +32,7 @@ import com.droidcon.alldone.utils.OrganiseToDoList
 
 @Composable
 fun ToDoList(
-    list: List<ToDoItem>,
+    toDoItems: Map<ToDoCategory, List<ToDoItem>>,
     listState: LazyListState,
     modifier: Modifier = Modifier,
     updateItem: (ToDoItem, EditMode) -> Unit
@@ -52,16 +52,18 @@ fun ToDoList(
             state = listState,
             modifier = modifier,
             content = {
-                items(list) { toDoItem ->
-                    ToDoListItem(toDoItem) { updatedItem, editMode ->
-                        updateItem(
-                            updatedItem,
-                            editMode
-                        )
+                categoryFilter.forEach { toDoCategory ->
+                    if (toDoItems.containsKey(toDoCategory) && toDoItems[toDoCategory]?.isEmpty() == false) {
+                        items(toDoItems[toDoCategory]!!) { toDoItem ->
+                            ToDoListItem(toDoItem) { updatedItem, editMode ->
+                                updateItem(updatedItem, editMode)
+                            }
+                            Spacer(modifier = Modifier.height(8.dp))
+                        }
                     }
-                    Spacer(modifier = Modifier.height(8.dp))
                 }
-            })
+            }
+        )
     }
 }
 
@@ -71,7 +73,7 @@ private fun ToDoListPreview() {
     AllDoneTheme {
         Surface {
             ToDoList(
-                list = OrganiseToDoList(listOf(
+                toDoItems = OrganiseToDoList(listOf(
                     ToDoItem(-1, "Personal 1", "Personal 1 description",ToDoCategory.PERSONAL),
                     ToDoItem(-1, "Personal 2", "Personal 2 description",ToDoCategory.PERSONAL),
                     ToDoItem(-1, "Travel 1", "Travel 1 description",ToDoCategory.TRAVEL),

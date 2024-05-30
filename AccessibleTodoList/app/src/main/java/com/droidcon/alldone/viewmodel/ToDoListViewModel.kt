@@ -2,6 +2,7 @@ package com.droidcon.alldone.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.droidcon.alldone.model.ToDoCategory
 import com.droidcon.alldone.model.ToDoItem
 import com.droidcon.alldone.repository.Repository
 import com.droidcon.alldone.utils.OrganiseToDoList
@@ -69,7 +70,7 @@ class ToDoListViewModel @Inject constructor(val repository: Repository) : ViewMo
         object EmptyList : ToDoListUiState()
         data class ErrorState(val error: ToDoListUiError) : ToDoListUiState()
         data class ToDoList(
-            val list: List<ToDoItem>,
+            val toDoItems: Map<ToDoCategory, List<ToDoItem>>,
             val recentlyDeleted: ToDoItem? = null
         ) : ToDoListUiState()
     }

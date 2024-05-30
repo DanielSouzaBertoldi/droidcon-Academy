@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Edit
@@ -18,6 +19,7 @@ import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Surface
@@ -28,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -72,6 +75,16 @@ fun ToDoListItem(
             .blueprintId("ToDoListItemCard")
             .testTag("OutlinedCard_ToDoListItem")
             .padding(horizontal = 12.dp, vertical = 1.dp)
+            .toggleable(
+                role = Role.Checkbox,
+                value = toDoItem.complete,
+                onValueChange = {
+                    updateItem(
+                        toDoItem.copy(complete = !toDoItem.complete),
+                        EditMode.IN_PLACE,
+                    )
+                }
+            )
 
     ) {
         Spacer(modifier = modifier.height(6.dp))
@@ -105,38 +118,42 @@ fun ToDoListItem(
                     .padding(horizontal = 12.dp)
             )
         }
-        Row(
-            Modifier.padding(12.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Filled.Share,
-                contentDescription = null,
+        Row {
+            IconButton(
                 modifier = Modifier
-                    .blueprintId("ShareButton")
-                    .clickable(onClick = shareAction)
-            )
+                    .blueprintId("ShareButton"),
+                onClick = shareAction,
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Share,
+                    contentDescription = shareDescription,
+                )
+            }
 
-            Spacer(modifier = Modifier.width(12.dp))
-
-            Icon(
-                imageVector = Icons.Filled.DateRange,
-                contentDescription = null,
+            IconButton(
                 modifier = Modifier
-                    .blueprintId("AddToCalendarButton")
-                    .clickable(onClick = addToCalendarAction)
-            )
+                    .blueprintId("AddToCalendarButton"),
+                onClick = addToCalendarAction,
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.DateRange,
+                    contentDescription = addToCalendarDescription,
+                )
+            }
 
             Spacer(modifier = Modifier.weight(1.0f))
 
-            Icon(
-                imageVector = Icons.Filled.Edit,
-                contentDescription = null,
+            IconButton(
                 modifier = Modifier
-                    .blueprintId("EditButton")
-                    .clickable(onClick = editAction)
-            )
+                    .blueprintId("EditButton"),
+                onClick = editAction,
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Edit,
+                    contentDescription = editDescription,
+                )
+            }
         }
-        Spacer(modifier = modifier.height(6.dp))
     }
 }
 
@@ -158,7 +175,7 @@ private fun ToDoListItemPreview() {
                         }
                     }
                     heights {
-                        group { "ShareButton".top lineTo  "ShareButton".bottom }
+                        group { "ShareButton".top lineTo "ShareButton".bottom }
                         group(Position.Horizontal.End) {
                             "ToDoListItemCard".top lineTo "TodoListItemCard".bottom
                         }

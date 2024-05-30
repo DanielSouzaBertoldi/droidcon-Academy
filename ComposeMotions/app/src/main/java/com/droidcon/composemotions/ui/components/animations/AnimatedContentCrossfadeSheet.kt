@@ -3,6 +3,7 @@ package com.droidcon.composemotions.ui.components.animations
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.Crossfade
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.with
@@ -15,6 +16,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.MaterialTheme
@@ -51,19 +53,35 @@ internal const val DURATION = 800
  * Note the custom [androidx.compose.animation.ContentTransform] lambda used to create the
  * slide effect in the first composable and the custom [tween] animation used for the cross-fading images.
  */
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun AnimatedContentCrossfadeSheet() {
     val images = listOf(R.drawable.dog1, R.drawable.dog2, R.drawable.cat1, R.drawable.cat2)
-    var currentIndex by remember{ mutableStateOf(0) }
+    var currentIndex by remember { mutableStateOf(0) }
     Column(modifier = Modifier.fillMaxSize()) {
-        //TODO: Wrap with AnimatedContent
-        Image(
-            painter = painterResource(images[currentIndex]), stringResource(R.string.image),
+        AnimatedContent(
+            targetState = currentIndex,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(300.dp),
-            contentScale = ContentScale.Crop
-        )
+                .wrapContentHeight(),
+            transitionSpec = {
+                slideIntoContainer(
+                    towards = AnimatedContentScope.SlideDirection.Start,
+                    animationSpec = tween(durationMillis = DURATION),
+                ) with slideOutOfContainer(
+                    towards = AnimatedContentScope.SlideDirection.Start,
+                    tween(durationMillis = DURATION)
+                ) using SizeTransform(clip = true)
+            }
+        ) { targetState ->
+            Image(
+                painter = painterResource(images[targetState]), stringResource(R.string.image),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(300.dp),
+                contentScale = ContentScale.Crop
+            )
+        }
 
         LazyRow(
             modifier = Modifier

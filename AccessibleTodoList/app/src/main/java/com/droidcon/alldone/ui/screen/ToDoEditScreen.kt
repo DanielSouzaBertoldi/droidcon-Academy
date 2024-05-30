@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.sp
 import com.droidcon.alldone.R
 import com.droidcon.alldone.model.ToDoCategory
 import com.droidcon.alldone.ui.component.RadioButtonGroup
+import com.droidcon.alldone.ui.component.TrailingWarningIcon
 import com.droidcon.alldone.ui.theme.AllDoneTheme
 import com.droidcon.alldone.utils.validation.ValidateDescription
 import com.droidcon.alldone.utils.validation.ValidateTitle
@@ -50,22 +51,13 @@ fun ToDoEditScreen(
     var itemCategory by rememberSaveable { mutableStateOf(category) }
 
     val titleError = stringResource(id = R.string.invalid_title, ValidateTitle.minimumLength)
-    val descriptionError = stringResource(id = R.string.invalid_description, ValidateDescription.minimumLength)
+    val descriptionError =
+        stringResource(id = R.string.invalid_description, ValidateDescription.minimumLength)
     val saveReadyDescription = stringResource(R.string.ready_to_save)
     val localView = LocalView.current
 
-    var isTitleValid by rememberSaveable {
-        mutableStateOf(ValidateTitle(title).fold(
-            { false },
-            { true }
-        ))
-    }
-    var isDescriptionValid by rememberSaveable {
-        mutableStateOf(ValidateTitle(description).fold(
-            { false },
-            { true }
-        ))
-    }
+    var isTitleValid by rememberSaveable { mutableStateOf(true) }
+    var isDescriptionValid by rememberSaveable { mutableStateOf(true) }
 
     fun validateInputs() {
         isTitleValid = ValidateTitle(itemTitle).fold(
@@ -76,6 +68,8 @@ fun ToDoEditScreen(
             { false },
             { true }
         )
+        if (isTitleValid && isDescriptionValid)
+            localView.announceForAccessibility(saveReadyDescription)
     }
 
     Column(
@@ -95,6 +89,14 @@ fun ToDoEditScreen(
         )
         OutlinedTextField(
             label = { Text(text = stringResource(id = R.string.edit_label_title)) },
+            placeholder = {
+                Text(text = stringResource(id = R.string.edit_placeholder_title))
+            },
+            isError = !isTitleValid,
+            trailingIcon = { TrailingWarningIcon(isValid = isTitleValid) },
+            supportingText = {
+                if (!isTitleValid) Text(text = titleError, color = MaterialTheme.colorScheme.error)
+            },
             modifier = Modifier.fillMaxWidth(),
             value = itemTitle,
             onValueChange = {
@@ -107,6 +109,15 @@ fun ToDoEditScreen(
         Spacer(modifier = Modifier.height(5.dp))
         OutlinedTextField(
             label = { Text(text = stringResource(id = R.string.edit_label_description)) },
+            placeholder = {
+                Text(text = stringResource(id = R.string.edit_placeholder_description))
+            },
+            isError = !isDescriptionValid,
+            trailingIcon = { TrailingWarningIcon(isValid = isDescriptionValid) },
+            supportingText = {
+                if (!isDescriptionValid)
+                    Text(text = descriptionError, color = MaterialTheme.colorScheme.error)
+            },
             modifier = Modifier.fillMaxWidth(),
             value = itemDescription,
             onValueChange = {
@@ -144,7 +155,11 @@ fun ToDoEditScreen(
             modifier = Modifier
                 .fillMaxWidth(),
             enabled = isTitleValid && isDescriptionValid,
-            onClick = { onSave(itemTitle, itemDescription, itemCategory) }
+            onClick = {
+                validateInputs()
+                if (isTitleValid && isDescriptionValid)
+                    onSave(itemTitle, itemDescription, itemCategory)
+            }
         ) {
             Text(
                 text = stringResource(id = R.string.cta_save),

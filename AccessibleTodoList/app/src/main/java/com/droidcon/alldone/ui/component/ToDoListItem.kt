@@ -1,6 +1,7 @@
 package com.droidcon.alldone.ui.component
 
 
+import android.content.res.Configuration
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
@@ -36,7 +37,10 @@ import com.droidcon.alldone.model.ToDoCategory
 import com.droidcon.alldone.model.ToDoItem
 import com.droidcon.alldone.ui.theme.AllDoneTheme
 import com.droidcon.alldone.utils.EditMode
+import com.droidcon.alldone.utils.preview.AccessibilityPreview
+import com.popovanton0.blueprint.Blueprint
 import com.popovanton0.blueprint.blueprintId
+import com.popovanton0.blueprint.dsl.Position
 
 @Composable
 fun ToDoListItem(
@@ -108,6 +112,7 @@ fun ToDoListItem(
                 imageVector = Icons.Filled.Share,
                 contentDescription = null,
                 modifier = Modifier
+                    .blueprintId("ShareButton")
                     .clickable(onClick = shareAction)
             )
 
@@ -117,6 +122,7 @@ fun ToDoListItem(
                 imageVector = Icons.Filled.DateRange,
                 contentDescription = null,
                 modifier = Modifier
+                    .blueprintId("AddToCalendarButton")
                     .clickable(onClick = addToCalendarAction)
             )
 
@@ -126,6 +132,7 @@ fun ToDoListItem(
                 imageVector = Icons.Filled.Edit,
                 contentDescription = null,
                 modifier = Modifier
+                    .blueprintId("EditButton")
                     .clickable(onClick = editAction)
             )
         }
@@ -133,19 +140,40 @@ fun ToDoListItem(
     }
 }
 
-@Preview
+@AccessibilityPreview
 @Composable
 private fun ToDoListItemPreview() {
     AllDoneTheme {
         Surface(modifier = Modifier.padding(5.dp)) {
-            ToDoListItem(
-                ToDoItem(
-                    id = 0,
-                    title = "Write App",
-                    description = "You need to write an app",
-                    category = ToDoCategory.PERSONAL,
-                )
-            ) { _, _ -> /* Update: No-op */ }
+            Blueprint(
+                blueprintBuilder = {
+                    widths {
+                        group {
+                            "ShareButton".left lineTo "ShareButton".right
+                            "AddToCalendarButton".left lineTo "AddToCalendarButton".right
+                            "EditButton".left lineTo "EditButton".right
+                        }
+                        group(Position.Vertical.Bottom) {
+                            "ToDoListItemCard".left lineTo "TodoListItemCard".right
+                        }
+                    }
+                    heights {
+                        group { "ShareButton".top lineTo  "ShareButton".bottom }
+                        group(Position.Horizontal.End) {
+                            "ToDoListItemCard".top lineTo "TodoListItemCard".bottom
+                        }
+                    }
+                }
+            ) {
+                ToDoListItem(
+                    ToDoItem(
+                        id = 0,
+                        title = "Write App",
+                        description = "You need to write an app",
+                        category = ToDoCategory.PERSONAL,
+                    )
+                ) { _, _ -> /* Update: No-op */ }
+            }
         }
     }
 }

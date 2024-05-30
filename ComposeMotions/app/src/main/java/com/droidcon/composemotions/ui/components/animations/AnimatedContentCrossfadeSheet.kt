@@ -106,15 +106,18 @@ fun AnimatedContentCrossfadeSheet() {
             }
         }
 
-        //TODO: Wrap with Crossfade
-        Image(
-            painter = painterResource(images[currentIndex]), stringResource(R.string.image),
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(300.dp),
-            contentScale = ContentScale.Crop
-        )
-
+        Crossfade(
+            targetState = currentIndex,
+            animationSpec = tween(durationMillis = DURATION),
+        ) { targetIndex ->
+            Image(
+                painter = painterResource(images[targetIndex]), stringResource(R.string.image),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(300.dp),
+                contentScale = ContentScale.Crop
+            )
+        }
     }
 }
 
